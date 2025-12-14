@@ -14,17 +14,17 @@ const Register = () => {
     const password = form.password.value;
     const name = form.name.value;
 
-    if(password.length < 6) return toast.error("Password must be 6 characters");
-    if(!/[A-Z]/.test(password)) return toast.error("Must contain capital letter");
-    if(!/[!@#$%^&*]/.test(password)) return toast.error("Must contain special character");
+    if (password.length < 6) return toast.error("Password must be 6 characters");
+    if (!/[A-Z]/.test(password)) return toast.error("Must contain capital letter");
+    if (!/[!@#$%^&*]/.test(password)) return toast.error("Must contain special character");
 
     createUser(email, password)
-        .then((user) => {
-            // In real app, updateProfile with name/photo
-            toast.success("Registration Successful!");
-            navigate('/');
-        })
-        .catch(err => toast.error(err.message));
+      .then((result) => {
+        console.log("Registered user:", result.user);
+        toast.success("Registration Successful!");
+        navigate('/');
+      })
+      .catch(err => toast.error(err.message));
   };
 
   return (
@@ -39,31 +39,30 @@ const Register = () => {
               <label className="label">
                 <span className="label-text">Name</span>
               </label>
-              <input type="text" name="name" placeholder="Full Name" className="input input-bordered" required />
+              <input type="text" name="name" className="input input-bordered" required />
             </div>
+
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
               </label>
-              <input type="email" name="email" placeholder="email" className="input input-bordered" required />
+              <input type="email" name="email" className="input input-bordered" required />
             </div>
+
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input type="password" name="password" placeholder="password" className="input input-bordered" required />
+              <input type="password" name="password" className="input input-bordered" required />
             </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Photo URL</span>
-              </label>
-              <input type="text" name="photo" placeholder="https://..." className="input input-bordered" />
-            </div>
+
             <div className="form-control mt-6">
               <button className="btn btn-primary">Register</button>
             </div>
+
             <p className="text-center mt-4 text-sm">
-                Already have an account? <Link to="/login" className="text-primary hover:underline">Login</Link>
+              Already have an account?{" "}
+              <Link to="/login" className="text-primary hover:underline">Login</Link>
             </p>
           </form>
         </div>
