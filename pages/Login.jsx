@@ -7,9 +7,8 @@ const Login = () => {
   const { signIn, googleSignIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // Handle redirect path
-  const from = location.state || '/';
+
+  const from = location.state?.from?.pathname || "/";
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -18,18 +17,21 @@ const Login = () => {
     const password = form.password.value;
 
     signIn(email, password)
-        .then(() => {
-            toast.success("Login Successful!");
-            navigate(from, { replace: true });
-        })
-        .catch(err => toast.error(err.message));
+      .then((result) => {
+        console.log("Logged user:", result.user);
+        toast.success("Login Successful!");
+        navigate(from, { replace: true });
+      })
+      .catch(err => toast.error(err.message));
   };
 
   const handleGoogle = () => {
-    googleSignIn().then(() => {
+    googleSignIn()
+      .then(() => {
         toast.success("Social Login Successful");
         navigate(from, { replace: true });
-    });
+      })
+      .catch(err => toast.error(err.message));
   };
 
   return (
@@ -45,26 +47,26 @@ const Login = () => {
               <label className="label">
                 <span className="label-text">Email</span>
               </label>
-              <input type="email" name="email" placeholder="email" className="input input-bordered" required />
+              <input type="email" name="email" className="input input-bordered" required />
             </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input type="password" name="password" placeholder="password" className="input input-bordered" required />
+              <input type="password" name="password" className="input input-bordered" required />
             </div>
             <div className="form-control mt-6">
               <button className="btn btn-primary">Login</button>
             </div>
-            
+
             <div className="divider">OR</div>
-            
+
             <button type="button" onClick={handleGoogle} className="btn btn-outline btn-accent">
-                Sign in with Google
+              Sign in with Google
             </button>
 
             <p className="text-center mt-4 text-sm">
-                New here? <Link to="/register" className="text-primary hover:underline">Register</Link>
+              New here? <Link to="/register" className="text-primary hover:underline">Register</Link>
             </p>
           </form>
         </div>
